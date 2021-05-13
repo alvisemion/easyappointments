@@ -96,6 +96,8 @@ class Backend_api extends EA_Controller {
             // If the current user is a provider he must only see his own appointments.
             if ($role_slug === DB_SLUG_PROVIDER)
             {
+                // Unset to remove reference from loop that enrich with provider\service\customer nodes
+                unset($appointment);
                 foreach ($response['appointments'] as $index => $appointment)
                 {
                     if ((int)$appointment['id_users_provider'] !== (int)$user_id)
@@ -116,6 +118,8 @@ class Backend_api extends EA_Controller {
             // If the current user is a secretary he must only see the appointments of his providers.
             if ($role_slug === DB_SLUG_SECRETARY)
             {
+                // Unset to remove reference from loop that enrich with provider\service\customer nodes
+                unset($appointment);
                 $providers = $this->secretaries_model->get_row($user_id)['providers'];
                 foreach ($response['appointments'] as $index => $appointment)
                 {
